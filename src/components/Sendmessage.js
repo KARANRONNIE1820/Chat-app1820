@@ -3,16 +3,17 @@ import { db, auth }  from '../firebase'
 import firebase from 'firebase'
 import { Input, Button } from '@material-ui/core'
 
-const Sendmessage = ({scroll}) => {
+const SendMessage = ({scroll}) => {
     const [msg, setMsg] = useState('')
 
-    async function SendMessage () {
-        const [msg , setmsg] = useState('')
+    async function SendMessage (e) {
+        const [msg , setMsg] = useState('')
 
         async function SendMessage(e) {
             e.preventDefault()
-            const {uid, auth } = auth.currentUser
+            const { uid, photoURL } = auth.currentUser
         }
+
         await db.collection('messages').add({
             text: msg,
             photoURL,
@@ -21,15 +22,17 @@ const Sendmessage = ({scroll}) => {
         })
         setMsg('')
         scroll.current.scrollIntoView({behavior: 'smooth' })
-     }
-  return (
-    <div>
-        <form onSubmit={SendMessage}>
-            <Input valu ={msg} onChange={(e)=> setMsg(e.target.value)} placeholder="message..."/>
-            <Button type="submit">Send</Button>
-        </form>
-    </div>
-  )
+    }
+    return (
+        <div>
+            <form onSubmit={SendMessage}>
+                <div className="sendMsg">
+                    <Input style={{ width: '78%', fontSize: '15px', fontWeight: '550', marginLeft: '5px', marginBottom: '-3px' }} placeholder='Message...' type="text" value={msg} onChange={e => setMsg(e.target.value)} />
+                    <Button style={{ width: '18%', fontSize: '15px', fontWeight: '550', margin: '4px 5% -13px 5%', maxWidth: '200px'}} type="submit">Send</Button>
+                </div>
+            </form>
+        </div>
+    )
 }
 
-export default Sendmessage
+export default SendMessage

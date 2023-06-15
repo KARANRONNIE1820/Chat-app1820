@@ -1,14 +1,14 @@
-import React, {useEffect, useRef, useState} from 'react'
-import { db , auth  } from '../firebase'
-import SendMessage from 'SendMessage'
+import React, { useState, useEffect, useRef } from 'react'
+import { db, auth } from '../firebase'
+import SendMessage from './SendMessage'
 import SignOut from './SignOut'
 
-const Chat = () => {
-    const scroll = useRef
+function Chat() {
+    const scroll = useRef()
     const [messages, setMessages] = useState([])
     useEffect(() => {
-        db.collection('messages').orderBy('createAt').limit(50).onSnapshot(snapshot => {
-        setMessages(snapshot.docs.map(docs => docs.data()))
+        db.collection('messages').orderBy('createdAt').limit(50).onSnapshot(snapshot => {
+            setMessages(snapshot.docs.map(doc => doc.data()))
         })
     }, [])
     return (
@@ -23,11 +23,11 @@ const Chat = () => {
                         </div>
                     </div>
                 ))}
-                </div>
-        <SendMessage  scroll={scroll}/>
-        <div ref={scroll}></div>
+            </div>
+            <SendMessage scroll={scroll} />
+            <div ref={scroll}></div>
         </div>
-  )
+    )
 }
 
 export default Chat
